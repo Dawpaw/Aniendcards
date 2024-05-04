@@ -70,17 +70,12 @@ def read_episodes(db: SessionDep, skip: int = 0, limit: int = 100):
 
 
 # Endcards
-# I don't like this link. TODO Change later
 @router.post(
-    "/artist/{artist_id}/episode/{episode_id}/endcards/",
+    "/endcards/",
     response_model=schemas.Endcards,
 )
-def create_endcard_for_episode(
-    episode_id: int, artist_id: int, endcard: schemas.EndcardsCreate, db: SessionDep
-):
-    return service.create_media_endcard(
-        db=db, endcard=endcard, episode_id=episode_id, artist_id=artist_id
-    )
+def create_endcard_for_episode(endcard: schemas.EndcardsCreate, db: SessionDep):
+    return service.create_media_endcard(db=db, endcard=endcard)
 
 
 @router.get("/endcards/", response_model=list[schemas.Endcards])

@@ -63,6 +63,8 @@ class EndcardsBase(BaseModel):
     img_url: str
     alt_img_url: str
     source_url: str
+    episode_id: int
+    artist_id: int
 
 
 class EndcardsCreate(EndcardsBase):
@@ -71,8 +73,6 @@ class EndcardsCreate(EndcardsBase):
 
 class Endcards(EndcardsBase):
     id: int
-    episode_id: int
-    artist_id: int
 
     class Config:
         from_attributes = True

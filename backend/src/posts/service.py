@@ -69,12 +69,8 @@ def get_endcards(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Endcards).offset(skip).limit(limit).all()
 
 
-def create_media_endcard(
-    db: Session, endcard: schemas.EndcardsCreate, episode_id: int, artist_id: int
-):
-    db_endcard = models.Endcards(
-        **endcard.model_dump(), episode_id=episode_id, artist_id=artist_id
-    )
+def create_media_endcard(db: Session, endcard: schemas.EndcardsCreate):
+    db_endcard = models.Endcards(**endcard.model_dump())
     db.add(db_endcard)
     db.commit()
     db.refresh(db_endcard)

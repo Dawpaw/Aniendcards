@@ -1,28 +1,142 @@
 from pydantic import BaseModel
 
-class EndcardBase(BaseModel):
-    url: str
-    episode_number: int
-    
-class EndcardCreate(EndcardBase):
+from src.posts.enums import MediaSeason, MediaType, MediaFormat
+
+
+# MediaTitles
+# class MediaTitlesBase(BaseModel):
+#     original: str
+#     english: str
+#     romaji: str
+
+
+# class MediaTitlesCreate(MediaTitlesBase):
+#     pass
+
+
+# class MediaTitles(MediaTitlesBase):
+#     id: int
+#     media_id: int
+
+#     class Config:
+#         from_attributes = True
+
+
+# MediaLinks
+class MediaLinksBase(BaseModel):
+    link: str
+
+
+class MediaLinksCreate(MediaLinksBase):
     pass
 
-class EndCard(EndcardBase):
-    anime_id: int
-    
-    class Config:
-        orm_mode = True
 
-class AnimeBase(BaseModel):
-    title: str
-    anilist_url: str
-    
-class AnimeCreate(AnimeBase):
-    pass 
+class MediaLinks(MediaLinksBase):
+    id: int
+    media_id: int
 
-class Anime(AnimeBase):
-    id:int 
-    endcards: list[EndCard] = []
-    
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+# ArtistsLinks
+class ArtistsLinksBase(BaseModel):
+    link: str
+
+
+class ArtistsLinksCreate(ArtistsLinksBase):
+    pass
+
+
+class ArtistsLinks(ArtistsLinksBase):
+    id: int
+    artist_id: int
+
+    class Config:
+        from_attributes = True
+
+
+# Endcards
+
+
+class EndcardsBase(BaseModel):
+    img_url: str
+    alt_img_url: str
+    source_url: str
+
+
+class EndcardsCreate(EndcardsBase):
+    pass
+
+
+class Endcards(EndcardsBase):
+    id: int
+    episode_id: int
+    artist_id: int
+
+    class Config:
+        from_attributes = True
+
+
+# Artist
+class ArtistBase(BaseModel):
+    username: str
+
+
+class ArtistCreate(ArtistBase):
+    pass
+
+
+class Artist(ArtistBase):
+    id: int
+    endcards: list[Endcards] = []
+    links: list[ArtistsLinks] = []
+
+    class Config:
+        from_attributes = True
+
+
+# Episodes
+class EpisodeBase(BaseModel):
+    description: str
+    episode_number: int
+
+
+class EpisodeCreate(EpisodeBase):
+    pass
+
+
+class Episode(EpisodeBase):
+    id: int
+    media_id: int
+    endcards: list[Endcards] = []
+
+    class Config:
+        from_attributes = True
+
+
+# Media
+class MediaBase(BaseModel):
+    title_original: str
+    title_romaji: str
+    title_english: str
+    type: MediaType
+    format: MediaFormat
+    description: str
+    season: MediaSeason
+    season_year: int
+    episodes_count: int
+    chapters_count: int
+
+
+class MediaCreate(MediaBase):
+    pass
+
+
+class Media(MediaBase):
+    id: int
+    external_links: list[MediaLinks] = []
+    episodes: list[Episode] = []
+
+    class Config:
+        from_attributes = True

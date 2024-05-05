@@ -15,6 +15,7 @@
         "@mdi/js": "^7.4.47",
         "@smui/banner": "^7.0.0",
         "@smui/button": "^7.0.0",
+        "@smui/card": "^7.0.0",
         "@smui/icon-button": "^7.0.0",
         "@smui/paper": "^7.0.0",
         "@smui/select": "^7.0.0",

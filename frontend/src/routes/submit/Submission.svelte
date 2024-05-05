@@ -1,7 +1,7 @@
 <script lang="ts">
     import Paper, { Title, Content } from "@smui/paper";
 
-    import Media from "./Media.svelte";
+    import Media from "./MediaSubmit.svelte";
     import Artist from "./Artist.svelte";
     import Episode from "./Episode.svelte";
     import EndcardSubmit from "./EndcardSubmit.svelte";

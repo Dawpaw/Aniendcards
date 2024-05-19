@@ -6,7 +6,7 @@
 <div class="max-w-64 mt-8 ml-4">
     <p class="mb-4 font-bold text-2xl pt-2 text-center">{media.title_romaji}</p>
     <img
-        src="https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx21366-qp94AxKx6ZaM.jpg"
+        src={media.cover_image}
         alt="poster"
         class="object-contain rounded-lg"
     />

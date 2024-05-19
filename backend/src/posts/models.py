@@ -21,6 +21,7 @@ class Media(Base):
     season_year: Mapped[int]
     episodes_count: Mapped[int]
     chapters_count: Mapped[int]
+    cover_image: Mapped[str]
 
     # titles: Mapped["MediaTitles"] = relationship(back_populates="media")
     external_links: Mapped[list["MediaLinks"]] = relationship(back_populates="media")

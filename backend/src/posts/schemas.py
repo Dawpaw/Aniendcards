@@ -127,6 +127,7 @@ class MediaBase(BaseModel):
     season_year: int
     episodes_count: int
     chapters_count: int
+    cover_image: str
 
 
 class MediaCreate(MediaBase):

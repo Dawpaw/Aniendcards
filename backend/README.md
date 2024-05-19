@@ -1,0 +1,1 @@
+Run `fastapi dev src/main.py`

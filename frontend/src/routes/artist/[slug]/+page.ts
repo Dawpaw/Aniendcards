@@ -3,7 +3,7 @@ export const load: PageLoad = async ({ params }) => {
 
     let artistId: number = Number(params.slug);
     if (isNaN(artistId)) {
-        error(422, 'Invalid ID type')
+        error(422, "422")
     }
 
     try {
@@ -12,7 +12,7 @@ export const load: PageLoad = async ({ params }) => {
         return { artist: artist };
 
     } catch (e) {
-        error(404, 'Not found'); // TODO change this
+        throw e;
     }
 };
 
@@ -28,7 +28,7 @@ async function fetchMedia(artistId: number) {
     );
 
     if (!response.ok) {
-        throw new Error("Error getting media");
+        error(response.status, `${response.status}`)
     }
     const artist = await response.json();
     return artist;

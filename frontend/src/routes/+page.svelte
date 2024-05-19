@@ -28,7 +28,7 @@
 </script>
 
 <h1
-    class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+    class="mb-4 text-4xl text-center font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
 >
     The best endcards in town
 </h1>
@@ -39,10 +39,10 @@
             <Card>
                 <div class="p4 mx-4">
                     <h2 class="mb-4 font-bold text-2xl pt-2">
-                        Episode {endcard.episode_id}
+                        {endcard.episode.media.title_romaji}
                     </h2>
-                    <h3 class="text-gray-500 mb-6">
-                        Artist {endcard.artist_id}
+                    <h3 class="text-gray-500 mb-6 font-bold">
+                        {endcard.artist.username}
                     </h3>
                 </div>
                 <PrimaryAction on:click={() => clicked++}>
@@ -50,7 +50,10 @@
                         style="background-image:url({endcard.img_url})"
                         aspectRatio="16x9"
                     />
-                    <Content class="">Blob</Content>
+                    <Content class=""
+                        >Episode {endcard.episode.episode_number}</Content
+                    >
+                    <Content class="">{endcard.episode.description}</Content>
                 </PrimaryAction>
             </Card>
         </div>

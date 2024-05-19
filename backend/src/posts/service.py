@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from src.posts import models, schemas
 from src.posts.enums import MediaFormat, MediaType

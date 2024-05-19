@@ -78,7 +78,7 @@ def create_endcard_for_episode(endcard: schemas.EndcardsCreate, db: SessionDep):
     return service.create_media_endcard(db=db, endcard=endcard)
 
 
-@router.get("/endcards/", response_model=list[schemas.Endcards])
+@router.get("/endcards/", response_model=list[schemas.EndcardsLazy])
 def read_endcards(db: SessionDep, skip: int = 0, limit: int = 100):
     endcards = service.get_endcards(db, skip=skip, limit=limit)
     return endcards

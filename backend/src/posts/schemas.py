@@ -140,3 +140,36 @@ class Media(MediaBase):
 
     class Config:
         from_attributes = True
+
+
+class MediaLazy(MediaBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+class EpisodeLazy(EpisodeBase):
+    id: int
+    media_id: int
+    media: MediaLazy
+
+    class Config:
+        from_attributes = True
+
+
+class ArtistLazy(ArtistBase):
+    id: int
+    links: list[ArtistsLinks] = []
+
+    class Config:
+        from_attributes = True
+
+
+class EndcardsLazy(EndcardsBase):
+    id: int
+    episode: EpisodeLazy
+    artist: ArtistLazy
+
+    class Config:
+        from_attributes = True

@@ -2,8 +2,8 @@
     import Card, { Content, PrimaryAction, Media } from "@smui/card";
 
     export let endcard;
-    export let episodeNumber: number;
-    export let episodeDescription: string;
+    export let episodeNumber: number | null = null;
+    export let episodeDescription: string | null = null;
 
     let clicked = 0;
 </script>
@@ -11,9 +11,11 @@
 <div class="max-w-96 mt-8 ml-4">
     <Card>
         <div class="p4 mx-4">
-            <h2 class="mb-4 font-bold text-2xl pt-2">
-                Episode {episodeNumber} - {episodeDescription}
-            </h2>
+            {#if episodeNumber !== null}
+                <h2 class="mb-4 font-bold text-2xl pt-2">
+                    Episode {episodeNumber} - {episodeDescription}
+                </h2>
+            {/if}
         </div>
         <PrimaryAction on:click={() => clicked++}>
             <Media

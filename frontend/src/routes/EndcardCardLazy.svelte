@@ -14,9 +14,11 @@
                     {endcard.episode.media.title_romaji}
                 </h2>
             </a>
-            <h3 class="text-gray-500 mb-6 font-bold">
-                {endcard.artist.username}
-            </h3>
+            <a href="/artist/{endcard.artist_id}">
+                <h3 class="text-gray-500 mb-6 font-bold">
+                    {endcard.artist.username}
+                </h3>
+            </a>
         </div>
         <PrimaryAction on:click={() => clicked++}>
             <Media

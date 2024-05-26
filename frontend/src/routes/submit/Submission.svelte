@@ -5,6 +5,7 @@
     import Artist from "./Artist.svelte";
     import Episode from "./Episode.svelte";
     import EndcardSubmit from "./EndcardSubmit.svelte";
+    import EndcardSubmitFull from "./EndcardSubmitFull.svelte";
 
     export let typeSubmission: string;
 </script>
@@ -18,5 +19,7 @@
         <EndcardSubmit />
     {:else if typeSubmission === "Artist"}
         <Artist />
+    {:else if typeSubmission === "EndcardFull"}
+        <EndcardSubmitFull />
     {/if}
 </Paper>

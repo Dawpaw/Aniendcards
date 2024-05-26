@@ -2,12 +2,12 @@
     import Tab, { Label } from "@smui/tab";
     import TabBar from "@smui/tab-bar";
     import Submission from "./Submission.svelte";
-    let active: string = "Media";
+    let active: string = "EndcardFull";
 </script>
 
 <div>
     <TabBar
-        tabs={["Media", "Episode", "Endcard", "Artist"]}
+        tabs={["Media", "EndcardFull", "Episode", "Endcard", "Artist"]}
         class="mt-2"
         let:tab
         bind:active

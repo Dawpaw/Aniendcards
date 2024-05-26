@@ -15,6 +15,7 @@
         season_year: 0,
         episodes_count: 0,
         chapters_count: 0,
+        cover_image: "",
     };
 
     const mediaTypes = ["ANIME", "MANGA"];
@@ -32,12 +33,22 @@
     ];
 
     const mediaSeasons = ["WINTER", "SPRING", "SUMMER", "FALL"];
+
+    const submitMedia = (media: any) => {
+        fetch("http://127.0.0.1:8000/media", {
+            method: "POST",
+            body: JSON.stringify(media),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        });
+    };
 </script>
 
 <Title>Media</Title>
 <Textfield bind:value={media.title_original} label="Original Title"></Textfield>
 <Textfield bind:value={media.title_romaji} label="Original Romaji"></Textfield>
-<Textfield bind:value={media.title_english} label="Original Title"></Textfield>
+<Textfield bind:value={media.title_english} label="English Title"></Textfield>
 
 <Select
     key={(mediaType) => `${mediaType == null ? "ANIME" : mediaType}`}
@@ -81,8 +92,11 @@
 <Textfield bind:value={media.chapters_count} label="Chapters" type="number"
 ></Textfield>
 
+<Textfield bind:value={media.cover_image} type="url" label="Cover image url"
+></Textfield>
+
 <div style="flex items-center">
-    <IconButton class="material-icons" on:click={() => console.log(media)}
+    <IconButton class="material-icons" on:click={() => submitMedia(media)}
         >send</IconButton
     >
 </div>

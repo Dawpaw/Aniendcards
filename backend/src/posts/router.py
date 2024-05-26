@@ -1,4 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException, Query, Response, status
 
 from src.posts import models, schemas, service
 from src.database import engine
@@ -41,10 +43,20 @@ def create_artist(artist: schemas.ArtistCreate, db: SessionDep):
     return service.create_artist(db=db, artist=artist)
 
 
-@router.get("/artist/", response_model=list[schemas.Artist])
+@router.get("/artists/", response_model=list[schemas.Artist])
 def read_artists(db: SessionDep, skip: int = 0, limit: int = 100):
-    medias = service.get_artists(db, skip=skip, limit=limit)
-    return medias
+    artists = service.get_artists(db, skip=skip, limit=limit)
+    return artists
+
+
+@router.get("/artist/", response_model=schemas.Artist)
+def read_artist_by_username(
+    db: SessionDep, username: Annotated[str, Query(min_length=3)] = ...
+):
+    artist = service.get_artist_by_username(db, username=username)
+    if not artist:
+        raise HTTPException(status_code=404, detail="Artist doesn't exist")
+    return artist
 
 
 @router.get("/artist/{artist_id}", response_model=schemas.Artist)

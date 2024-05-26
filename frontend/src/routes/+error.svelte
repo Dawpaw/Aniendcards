@@ -2,6 +2,11 @@
     import { page } from "$app/stores";
     import Button from "@smui/button";
     import { getReasonPhrase } from "http-status-codes";
+
+    let getReason = (message: string) => {
+        if (message == "Not Found") return "";
+        return getReasonPhrase(message);
+    };
 </script>
 
 <div class="flex justify-center">
@@ -16,7 +21,7 @@
         {#if $page.error}
             <div class="my-4 font-bold text-2xl pt-2">
                 {$page.error.message}
-                {getReasonPhrase($page.error.message)}
+                {getReason($page.error.message)}
             </div>
         {/if}
         <div class="text-gray-500 mb-6 font-semibold">

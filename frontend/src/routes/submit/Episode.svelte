@@ -11,8 +11,7 @@
 
 <Title>Episode</Title>
 
-<Textfield bind:value={episode.description} textarea label="Description"
-></Textfield>
+<Textfield bind:value={episode.description} label="Description"></Textfield>
 
 <Textfield
     bind:value={episode.episode_number}

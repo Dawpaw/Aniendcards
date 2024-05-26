@@ -1,6 +1,6 @@
 <script lang="ts">
     export let media;
-    import { getHostname, capitalizeFirstLetter } from "$lib/utils";
+    import { getHostname } from "$lib/utils";
 </script>
 
 <div class="max-w-64 mt-8 ml-4">
@@ -31,7 +31,7 @@
                         target="_blank"
                     >
                         <div class="text-cool-blue">
-                            {capitalizeFirstLetter(getHostname(links.link))}
+                            {getHostname(links.link)}
                         </div></a
                     >
                 </div>

@@ -5,3 +5,4 @@ Run `fastapi dev src/main.py`
 - Update endpoints
 - Delete endpoints
 - Authentication
+- Somehow fix the whole lazy and not lazy types

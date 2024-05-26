@@ -1,11 +1,12 @@
 <script lang="ts">
-    import Card, { Content, PrimaryAction, Media } from "@smui/card";
+    import Card, { PrimaryAction, Media } from "@smui/card";
+    import EndCardDialog from "./EndCardDialog.svelte";
 
     export let endcard;
     export let episodeNumber: number | null = null;
     export let episodeDescription: string | null = null;
 
-    let clicked = 0;
+    let openDialog: boolean = false;
 </script>
 
 <div class="max-w-96 mt-8 ml-4">
@@ -17,11 +18,17 @@
                 </h2>
             {/if}
         </div>
-        <PrimaryAction on:click={() => clicked++}>
+        <PrimaryAction
+            on:click={() => {
+                openDialog = !openDialog;
+            }}
+        >
             <Media
                 style="background-image:url({endcard.img_url})"
                 aspectRatio="16x9"
             />
         </PrimaryAction>
     </Card>
+
+    <EndCardDialog bind:open={openDialog} endcardId={endcard.id} />
 </div>

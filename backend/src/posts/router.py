@@ -82,3 +82,11 @@ def create_endcard_for_episode(endcard: schemas.EndcardsCreate, db: SessionDep):
 def read_endcards(db: SessionDep, skip: int = 0, limit: int = 100):
     endcards = service.get_endcards(db, skip=skip, limit=limit)
     return endcards
+
+
+@router.get("/endcards/{endcard_id}", response_model=schemas.EndcardsLazy)
+def read_endcard(db: SessionDep, endcard_id: int):
+    db_endcard = service.get_endcard_by_id(db=db, endcard_id=endcard_id)
+    if db_endcard is None:
+        raise HTTPException(status_code=400, detail="Endcard not found")
+    return db_endcard

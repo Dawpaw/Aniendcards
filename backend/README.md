@@ -1,4 +1,4 @@
-Run `fastapi dev src/main.py`
+Run `uv run fastapi dev src/main.py`
 
 ### TODO
 - Missing create endpoints

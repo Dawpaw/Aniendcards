@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from src.database import Base
-from src.posts.enums import MediaType, MediaFormat, MediaSeason
+from src.enums import MediaType, MediaFormat, MediaSeason
 
 
 # Enums

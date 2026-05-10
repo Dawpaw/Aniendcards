@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.posts.enums import MediaSeason, MediaType, MediaFormat
+from src.enums import MediaSeason, MediaType, MediaFormat
 
 
 # MediaTitles

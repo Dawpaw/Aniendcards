@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
 from src.posts import models, schemas
-from src.posts.enums import MediaFormat, MediaType
+from src.enums import MediaFormat, MediaType
 
 
 # Media

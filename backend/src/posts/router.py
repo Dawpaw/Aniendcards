@@ -2,11 +2,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, HTTPException, Query, Response, status
 
-from src.posts import models, schemas, service
+from backend.src.domain import orm
+from src.posts import schemas, service
 from src.database import engine
 from src.posts.dependecies import SessionDep
 
-models.Base.metadata.create_all(bind=engine)
+orm.Base.metadata.create_all(bind=engine)
 
 router = APIRouter()
 

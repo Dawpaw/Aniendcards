@@ -19,25 +19,29 @@ class Media:
     cover_image: str
     titles: List["MediaTitle"] = field(default_factory=list)
     entries: List["Entry"]  = field(default_factory= list)
-    links: List[HttpUrl] = field(default_factory=list)
+    links: List["MediaLink"] = field(default_factory=list)
 
     @property
     def entries_count(self) -> int:
         return len(self.entries)
 
-@dataclass
+
+@dataclass(frozen=True)
 class MediaTitle:
     id: int
     language: Languages
     title: str
 
+@dataclass(frozen=True)
+class MediaLink(): 
+    id: int
+    link: HttpUrl
 
 # Can be either an episode or a chapter
 @dataclass
 class Entry: 
     id: int
-    media_id: int
-    description: str
+    description: Optional[str]
     entry_number: float
     endcards: List["Endcard"] = field(default_factory=list)
 

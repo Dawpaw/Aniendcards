@@ -1,13 +1,13 @@
-from sqlalchemy import ForeignKey, MetaData, Table, Column, Integer, String, Date, Text, Float
-from sqlalchemy.orm import registry, relationship, Mapped, mapped_column
+from sqlalchemy import ForeignKey, Table, Column, Integer, String, Text, Float
+from sqlalchemy.orm import registry, relationship
 
-from src.database import Base
+# TODO see if this can be used
 from src.enums import MediaType, MediaFormat, MediaSeason
-import backend.src.domain.model as model
-
+import src.domain.model as model
 
 mapper_registry = registry()
 metadata = mapper_registry.metadata
+
 
 
 media = Table(
@@ -27,7 +27,7 @@ media_titles = Table(
     Column("id", Integer, primary_key=True, autoincrement=True), 
     Column("media_id", ForeignKey("media.id")), 
     Column("language", String(8)),
-    Column("title", String)
+    Column("title", String, unique=True)
 )
 
 
@@ -79,9 +79,9 @@ def start_mappers():
                             model.Media,
                             media,
                             properties = {
-                                "titles": relationship(model.MediaTitle, collection_class=list), 
-                                "entries" : relationship(model.Entry, collection_class=list),
-                                "links" : relationship(model.MediaLink, collection_class=list)
+                                "titles": relationship(model.MediaTitle, collection_class=list, lazy="joined"), 
+                                "entries" : relationship(model.Entry, collection_class=list, lazy="joined"),
+                                "links" : relationship(model.MediaLink, collection_class=list, lazy="joined")
                             }
     )
 
@@ -93,14 +93,14 @@ def start_mappers():
                             model.Entry, 
                             entries, 
                             properties = {
-                                "endcards": relationship(model.Endcard, collection_class=list)
+                                "endcards": relationship(model.Endcard, collection_class=list, lazy="joined")
                             })
 
     artists_mapper = mapper_registry.map_imperatively(
                             model.Artist, 
                             artists,
                             properties = {
-                                "links" : relationship(model.ArtistLink) 
+                                "links" : relationship(model.ArtistLink, lazy="joined") 
                             }
     )
 
@@ -110,6 +110,6 @@ def start_mappers():
                             model.Endcard, 
                             endcards,
                             properties = {
-                                "artist" : relationship(model.Artist)
+                                "artist" : relationship(model.Artist, lazy="joined")
                             }
     )

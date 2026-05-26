@@ -19,6 +19,7 @@ media = Table(
     Column("description", Text), 
     Column("season", String), 
     Column("season_year", String), 
+    # TODO add cover image
 )
 
 media_titles = Table(

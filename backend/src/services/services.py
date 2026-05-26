@@ -85,3 +85,12 @@ def create_artist(request: CreateArtistCommand, uow: SqlAlchemyUnitOfWork):
         uow.artists.add_artist(artist)
         uow.commit()
         return artist
+    
+def get_media_by_title(title: str , uow: SqlAlchemyUnitOfWork):
+    with uow:
+        media = uow.medias.get_media_by_title(title)
+        if not media:
+            # TODO add custom exception
+            raise Exception("Media does not exist") 
+        uow.commit()
+        return media

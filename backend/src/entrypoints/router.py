@@ -34,10 +34,10 @@ def create_media(request: requests.CreateMediaRequest, uow: UowDep):
     return responses.MediaResponse.model_validate(media)
 
 
-# @router.get("/media/", response_model=list[schemas.Media])
-# def read_medias(db: SessionDep, skip: int = 0, limit: int = 100):
-#     medias = service.get_medias(db, skip=skip, limit=limit)
-#     return medias
+@router.get("/media/{media_title}", response_model=responses.MediaResponse)
+def read_media_by_title(media_title:str, uow: UowDep):
+    media = services.get_media_by_title(media_title, uow)
+    return responses.MediaResponse.model_validate(media)
 
 
 # @router.get("/media/{media_id}", response_model=schemas.Media)

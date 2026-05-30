@@ -1,3 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-sakura: #f4b8c8;
+  --color-sakura-light: #fce8ef;
+  --color-lavender: #c5b8e8;
+  --color-lavender-light: #ede8f9;
+  --color-cream: #fdf6f0;
+  --color-moss: #8ab4a0;
+  --color-ink: #2d2a35;
+  --color-ink-muted: #6b6478;
+  --color-surface: #ffffff;
+  --color-surface-raised: #fafafa;
+  --color-border: #ecdde8;
+
+  --font-display: "Noto Serif", serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --radius-card: 12px;
+}
+
+:root {
+  font-family: var(--font-body);
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+}

@@ -1,25 +1,20 @@
 <script>
-    import "../app.css";
-    import { goto } from "$app/navigation";
-    import Banner, { Label, Icon } from "@smui/banner";
-    import Button from "@smui/button";
+	import '../app.css';
+	import Navbar from '$lib/components/Navbar.svelte';
+	import Footer from '$lib/components/Footer.svelte';
+
+	let { children } = $props();
 </script>
 
-<Banner open autoClose={false}>
-    <Icon
-        on:click={() => goto("/")}
-        slot="icon"
-        class="material-icons"
-        color="primary">tv</Icon
-    >
-    <Label slot="label"
-        ><a href="/"><div class="font-bold text-black">AniEndcard</div></a
-        ></Label
-    >
-    <svelte:fragment slot="actions">
-        <Button href="/" class="mx-8">Home</Button>
-        <Button href="/submit" class="mx-8">Submit</Button>
-    </svelte:fragment>
-</Banner>
+<svelte:head>
+	<title>Aniendcards</title>
+	<meta name="description" content="A community database of anime endcard art" />
+</svelte:head>
 
-<slot />
+<div class="min-h-screen flex flex-col bg-[var(--color-cream)]">
+	<Navbar />
+	<main class="flex-1">
+		{@render children()}
+	</main>
+	<Footer />
+</div>

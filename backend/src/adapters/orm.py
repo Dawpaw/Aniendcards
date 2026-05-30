@@ -1,8 +1,6 @@
 from sqlalchemy import ForeignKey, Table, Column, Integer, String, Text, Float
 from sqlalchemy.orm import registry, relationship
 
-# TODO see if this can be used
-from src.enums import MediaType, MediaFormat, MediaSeason
 import src.domain.model as model
 
 mapper_registry = registry()

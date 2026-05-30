@@ -1,5 +1,6 @@
 import src.domain.model as model
 from src.services.commands import CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, CreateArtistCommand
+from src.services.exceptions import CreateException, GetException
 from src.services.unit_of_work import SqlAlchemyUnitOfWork
 
 
@@ -8,8 +9,7 @@ def create_media(request: CreateMediaCommand, uow: SqlAlchemyUnitOfWork):
         titles = [t.title for t in request.titles]
         media_exist = [uow.medias.get_media_by_title(title) for title in titles]
         if any(media_exist):
-            # TODO add custom exception
-            raise Exception("Media already exist") 
+            raise CreateException("Media already exist") 
         media = model.Media(
                 type=request.type,
                 format=request.format,
@@ -44,7 +44,7 @@ def create_entry(request: CreateEntryCommand, uow: SqlAlchemyUnitOfWork):
                     else uow.medias.get_media_by_title(request.media_title) if request.media_title \
                     else None 
         if media is None:
-            raise Exception("Media does not exist")
+            raise CreateException("Media does not exist")
         media.entries.append(entry)
         uow.medias.add_media(media)
         uow.commit()
@@ -54,8 +54,7 @@ def create_endcard(request: CreateEndcardCommand, uow: SqlAlchemyUnitOfWork):
     with uow:
         artist = uow.artists.get_artist_by_id(request.artist_id)
         if not artist:
-            # TODO add custom exceptions
-            raise Exception("Artist does not exist")
+            raise CreateException("Artist does not exist")
         endcard = model.Endcard(
                 img_url= request.img_url,
                 alt_img_url= request.alt_img_url,
@@ -66,7 +65,7 @@ def create_endcard(request: CreateEndcardCommand, uow: SqlAlchemyUnitOfWork):
         # Update the entry
         entry = uow.medias.get_entry_by_id(request.entry_id)
         if entry is None:
-            raise Exception("Entry does not exist")
+            raise CreateException("Entry does not exist")
         entry.endcards.append(endcard)
         uow.medias.add_entry(entry)
         uow.commit()
@@ -76,8 +75,7 @@ def create_artist(request: CreateArtistCommand, uow: SqlAlchemyUnitOfWork):
     with uow:
         artist_exist = uow.artists.get_artist_by_username(request.username)
         if artist_exist:
-            # TODO add custom error
-            raise Exception("Artist already exist")
+            raise CreateException("Artist already exist")
         artist = model.Artist(
                 username=request.username, 
                 links=[model.ArtistLink(link=link) for link in request.links] if request.links else None
@@ -92,8 +90,7 @@ def get_all_media(uow: SqlAlchemyUnitOfWork):
     with uow:
         medias = uow.medias.get_medias()
         if not medias:
-            # TODO add custom exception
-            raise Exception("No medias found") 
+            raise GetException("No medias found") 
         uow.commit()
         return medias
 
@@ -101,8 +98,7 @@ def get_media_by_id(id: int , uow: SqlAlchemyUnitOfWork):
     with uow:
         media = uow.medias.get_media_by_id(id)
         if not media:
-            # TODO add custom exception
-            raise Exception("Media does not exist") 
+            raise GetException("Media does not exist") 
         uow.commit()
         return media
 
@@ -110,8 +106,7 @@ def get_media_by_title(title: str , uow: SqlAlchemyUnitOfWork):
     with uow:
         media = uow.medias.get_media_by_title(title)
         if not media:
-            # TODO add custom exception
-            raise Exception("Media does not exist") 
+            raise GetException("Media does not exist") 
         uow.commit()
         return media
 
@@ -120,8 +115,7 @@ def get_artists(uow: SqlAlchemyUnitOfWork):
     with uow:
         artists = uow.artists.get_artists()
         if not artists:
-            # TODO add custom exception
-            raise Exception("No artist exist")
+            raise GetException("No artist exist")
         uow.commit()
         return artists
 
@@ -129,8 +123,7 @@ def get_artist_by_username(username: str, uow: SqlAlchemyUnitOfWork):
     with uow:
         artist = uow.artists.get_artist_by_username(username)
         if not artist:
-            # TODO add custom exception
-            raise Exception("No artist exist")
+            raise GetException("No artist exist")
         uow.commit()
         return artist
 
@@ -138,8 +131,7 @@ def get_artist_by_id(artists_id: int, uow: SqlAlchemyUnitOfWork):
     with uow:
         artist = uow.artists.get_artist_by_id(artists_id)
         if not artist:
-            # TODO add custom exception
-            raise Exception("No artist exist")
+            raise GetException("No artist exist")
         uow.commit()
         return artist
 
@@ -148,8 +140,7 @@ def get_endcards(uow: SqlAlchemyUnitOfWork):
     with uow:
         endcards = uow.medias.get_endcards()
         if not endcards:
-            # TODO add custom exception
-            raise Exception("No endcard exist")
+            raise GetException("No endcard exist")
         uow.commit()
         return endcards
 
@@ -157,7 +148,6 @@ def get_endcard_by_id(endcard_id:int, uow: SqlAlchemyUnitOfWork):
     with uow:
         endcard = uow.medias.get_endcard_by_id(endcard_id)
         if not endcard:
-            # TODO add custom exception
-            raise Exception("Endcard not found")
+            raise GetException("Endcard not found")
         uow.commit()
         return endcard

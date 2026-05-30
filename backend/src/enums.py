@@ -24,3 +24,8 @@ class MediaSeason(StrEnum):
     SPRINT = "SPRING"
     SUMMER = "SUMMER"
     FALL = "FALL"
+
+class Languages(StrEnum):
+    eng = "english"
+    jp = "japanese"
+    rm =  "romaji"

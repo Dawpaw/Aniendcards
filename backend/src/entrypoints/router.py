@@ -1,10 +1,10 @@
 from typing import Annotated, Generator
 
-from fastapi import APIRouter, HTTPException, Query, Depends, Response, status
+from fastapi import APIRouter, Depends
 
 from src.adapters import orm
 from src.entrypoints.schemas import requests, responses
-from src.services import services, commands, unit_of_work
+from src.services import services, unit_of_work
 from src.services.commands import CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, CreateArtistCommand, MediaTitle
 
 orm.start_mappers()
@@ -37,16 +37,17 @@ def create_media(request: requests.CreateMediaRequest, uow: UowDep):
 @router.get("/media/{media_title}", response_model=responses.MediaResponse)
 def read_media_by_title(media_title:str, uow: UowDep):
     media = services.get_media_by_title(media_title, uow)
-    return responses.MediaResponse.model_validate(media)
+    return media
 
+@router.get("/media/", response_model=list[responses.MediaResponse])
+def read_all_media(uow: UowDep):
+    media = services.get_all_media(uow)
+    return media
 
-# @router.get("/media/{media_id}", response_model=schemas.Media)
-# def read_anime(db: SessionDep, media_id: int):
-#     db_media = service.get_media_by_id(db=db, media_id=media_id)
-#     if db_media is None:
-#         raise HTTPException(status_code=400, detail="Anime not found")
-#     return db_media
-
+@router.get("/media/id/{media_id}", response_model=responses.MediaResponse)
+def read_media_by_id(media_id: int, uow: UowDep):
+    media = services.get_media_by_id(media_id, uow)
+    return media
 
 # Artists
 @router.post("/artist/", response_model=responses.ArtistReponse)
@@ -63,34 +64,27 @@ def create_artist(request: requests.CreateArtistRequest, uow: UowDep):
     return responses.ArtistReponse.model_validate(artist)
 
 
-# @router.get("/artists/", response_model=list[schemas.Artist])
-# def read_artists(db: SessionDep, skip: int = 0, limit: int = 100):
-#     artists = service.get_artists(db, skip=skip, limit=limit)
-#     return artists
+@router.get("/artists/", response_model=list[responses.ArtistReponse])
+def read_artists(uow: UowDep):
+    artists = services.get_artists(uow)
+    return artists
 
 
-# @router.get("/artist/", response_model=schemas.Artist)
-# def read_artist_by_username(
-#     db: SessionDep, username: Annotated[str, Query(min_length=3)] = ...
-# ):
-#     artist = service.get_artist_by_username(db, username=username)
-#     if not artist:
-#         raise HTTPException(status_code=404, detail="Artist doesn't exist")
-#     return artist
+@router.get("/artist/{username}", response_model=responses.ArtistReponse)
+def read_artist_by_username(username: str, uow: UowDep):
+    artist = services.get_artist_by_username(username, uow)
+    return artist
 
 
-# @router.get("/artist/{artist_id}", response_model=schemas.Artist)
-# def read_artist(db: SessionDep, artist_id: int):
-#     db_artist = service.get_artist_by_id(db=db, artist_id=artist_id)
-#     if db_artist is None:
-#         raise HTTPException(status_code=400, detail="Artist not found")
-#     return db_artist
+@router.get("/artist/id/{artist_id}", response_model=responses.ArtistReponse)
+def read_artist(artist_id: int, uow: UowDep):
+    db_artist = services.get_artist_by_id(artist_id, uow)
+    return db_artist
 
 
 # Entry
 @router.post("/entry/", response_model=responses.EntryResponse)
 def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
-    # TODO find a way to use the media
     entry = services.create_entry(
         CreateEntryCommand(
             description=request.description,
@@ -104,7 +98,7 @@ def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
     return responses.EntryResponse.model_validate(entry)
 
 # Endcards
-@router.post("/endcards/", response_model=responses.EndcardResponse)
+@router.post("/endcard/", response_model=responses.EndcardResponse)
 def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
     endcard = services.create_endcard(
         CreateEndcardCommand(
@@ -118,15 +112,13 @@ def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
     )
     return responses.EndcardResponse.model_validate(endcard)
 
-# @router.get("/endcards/", response_model=list[schemas.EndcardsLazy])
-# def read_endcards(db: SessionDep, skip: int = 0, limit: int = 100):
-#     endcards = service.get_endcards(db, skip=skip, limit=limit)
-#     return endcards
+@router.get("/endcards/", response_model=list[responses.EndcardResponse])
+def read_endcards(uow: UowDep):
+    endcards = services.get_endcards(uow)
+    return endcards
 
 
-# @router.get("/endcards/{endcard_id}", response_model=schemas.EndcardsLazy)
-# def read_endcard(db: SessionDep, endcard_id: int):
-#     db_endcard = service.get_endcard_by_id(db=db, endcard_id=endcard_id)
-#     if db_endcard is None:
-#         raise HTTPException(status_code=400, detail="Endcard not found")
-#     return db_endcard
+@router.get("/endcard/{endcard_id}", response_model=responses.EndcardResponse)
+def read_endcard(endcard_id: int, uow: UowDep):
+    db_endcard = services.get_endcard_by_id(endcard_id, uow)
+    return db_endcard

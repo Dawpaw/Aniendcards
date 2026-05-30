@@ -86,6 +86,26 @@ def create_artist(request: CreateArtistCommand, uow: SqlAlchemyUnitOfWork):
         uow.commit()
         return artist
     
+
+
+def get_all_media(uow: SqlAlchemyUnitOfWork):
+    with uow:
+        medias = uow.medias.get_medias()
+        if not medias:
+            # TODO add custom exception
+            raise Exception("No medias found") 
+        uow.commit()
+        return medias
+
+def get_media_by_id(id: int , uow: SqlAlchemyUnitOfWork):
+    with uow:
+        media = uow.medias.get_media_by_id(id)
+        if not media:
+            # TODO add custom exception
+            raise Exception("Media does not exist") 
+        uow.commit()
+        return media
+
 def get_media_by_title(title: str , uow: SqlAlchemyUnitOfWork):
     with uow:
         media = uow.medias.get_media_by_title(title)
@@ -94,3 +114,50 @@ def get_media_by_title(title: str , uow: SqlAlchemyUnitOfWork):
             raise Exception("Media does not exist") 
         uow.commit()
         return media
+
+
+def get_artists(uow: SqlAlchemyUnitOfWork):
+    with uow:
+        artists = uow.artists.get_artists()
+        if not artists:
+            # TODO add custom exception
+            raise Exception("No artist exist")
+        uow.commit()
+        return artists
+
+def get_artist_by_username(username: str, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        artist = uow.artists.get_artist_by_username(username)
+        if not artist:
+            # TODO add custom exception
+            raise Exception("No artist exist")
+        uow.commit()
+        return artist
+
+def get_artist_by_id(artists_id: int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        artist = uow.artists.get_artist_by_id(artists_id)
+        if not artist:
+            # TODO add custom exception
+            raise Exception("No artist exist")
+        uow.commit()
+        return artist
+
+
+def get_endcards(uow: SqlAlchemyUnitOfWork):
+    with uow:
+        endcards = uow.medias.get_endcards()
+        if not endcards:
+            # TODO add custom exception
+            raise Exception("No endcard exist")
+        uow.commit()
+        return endcards
+
+def get_endcard_by_id(endcard_id:int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        endcard = uow.medias.get_endcard_by_id(endcard_id)
+        if not endcard:
+            # TODO add custom exception
+            raise Exception("Endcard not found")
+        uow.commit()
+        return endcard

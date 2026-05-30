@@ -9,12 +9,14 @@ class ArtistsLinkResponse(BaseModel):
 
 
 class ArtistReponse(BaseModel):
+    id: int
     username: str
     links: list[ArtistsLinkResponse] | None
     class Config:
         from_attributes = True
 
 class EndcardResponse(BaseModel):
+    id: int
     img_url: HttpUrl
     alt_img_url: HttpUrl | None
     source_url: HttpUrl
@@ -23,6 +25,7 @@ class EndcardResponse(BaseModel):
         from_attributes = True
 
 class EntryResponse(BaseModel):
+    id: int
     description: str
     entry_number: float
     endcards: list[EndcardResponse] = []
@@ -41,6 +44,7 @@ class MediaTitleResponse(BaseModel):
         from_attributes = True
 
 class MediaResponse(BaseModel):
+    id: int
     type: MediaType
     format: MediaFormat | None
     season: MediaSeason | None
@@ -49,5 +53,6 @@ class MediaResponse(BaseModel):
     description: str
     titles: list[MediaTitleResponse]
     links: list[MediaLinkResponse] | None
+    entries: list[EntryResponse]
     class Config:
         from_attributes = True

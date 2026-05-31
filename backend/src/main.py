@@ -2,21 +2,25 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.entrypoints.router import router as post_router
 
-
+from contextlib import asynccontextmanager
 from sqlalchemy import create_engine
 from src.adapters.orm import metadata  # adjust import
-from src.config import get_sqlite_uri
+from src.config import get_postgres_uri
 
-engine = create_engine(get_sqlite_uri())
+engine = create_engine(get_postgres_uri())
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    metadata.create_all(engine)  
+    yield
 
-# FIXME remove
-@app.on_event("startup")
-def startup():
-    metadata.create_all(engine)
+app = FastAPI(lifespan=lifespan)
 
-origins = ["*"]  # TODO Change the actual origins
+# TODO Update once I know production domain
+origins = [
+    "http://localhost:5173",   # local dev
+    "http://localhost:3000",   # docker frontend
+]
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,6 +1,26 @@
-Run `uv run fastapi dev src/main.py`
+# Aniendcards — Backend
 
-### TODO
+FastAPI + SQLAlchemy backend for the Aniendcards database.
+
+## Stack
+
+- **Framework:** FastAPI
+- **ORM:** SQLAlchemy
+- **Database:** PostgreSQL
+- **Package manager:** uv
+
+## Local Development
+
+**Prerequisites:** Python 3.13+, uv
+
+```bash
+uv run fastapi dev src/main.py
+```
+
+The API will be available at http://localhost:8000 and the interactive docs at http://localhost:8000/docs.
+
+## TODO
+
 - Authentication
 - Update endpoints
 - Delete endpoints

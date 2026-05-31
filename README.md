@@ -1,16 +1,44 @@
 # Aniendcards
 
-Website to display Anime Endcards
+A website to browse anime endcards, navigate through titles and artists, and find everything in one place.
 
-I like anime endcards.    
-I don't know about a website were I can easily find anime endcards, navigate through animes and artist and get it all.
-So I just did it myself.   
+## Stack
 
+- **Frontend:** SvelteKit + Tailwind CSS v4
+- **Backend:** FastAPI + SQLAlchemy
+- **Database:** PostgreSQL
 
-### Details:
-- Backend runs using FastAPI and SQLAlchemy
-- Frontend runs using Svelte
+## Running with Docker
 
-### Running:
-- In the backend: start FasAPI with `uv run fastapi dev src/main.py`
-- In the Frontend: start Svelte in development mode with `npm run dev`
+Copy the example env file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Then start everything:
+
+```bash
+docker compose up
+```
+
+| Service  | URL                         |
+|----------|-----------------------------|
+| Frontend | http://localhost:5173        |
+| Backend  | http://localhost:8000        |
+| API Docs | http://localhost:8000/docs   |
+
+## Local Development
+
+**Backend:**
+```bash
+cd backend
+uv run fastapi dev src/main.py
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```

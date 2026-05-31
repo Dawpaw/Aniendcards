@@ -1,5 +1,9 @@
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+import os
 
-# TODO make this do more
-def get_sqlite_uri() -> str:
-    return SQLALCHEMY_DATABASE_URL
+def get_postgres_uri():
+    host = os.environ.get("DB_HOST", "localhost")
+    port = os.environ.get("DB_PORT", "5432")
+    user = os.environ.get("DB_USER", "aniendcards")
+    password = os.environ.get("DB_PASSWORD", "changeme")
+    db = os.environ.get("DB_NAME", "aniendcards")
+    return f"postgresql://{user}:{password}@{host}:{port}/{db}"

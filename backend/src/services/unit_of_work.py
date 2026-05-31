@@ -28,7 +28,7 @@ class AbstractUnitOfWork(abc.ABC):
         raise NotImplementedError
     
 DEFAULT_SESSION_FACTORY = sessionmaker(
-    bind=create_engine(config.get_sqlite_uri()),
+    bind=create_engine(config.get_postgres_uri()),
     expire_on_commit=False
 )
 

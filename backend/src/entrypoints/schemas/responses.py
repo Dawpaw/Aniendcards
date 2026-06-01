@@ -56,3 +56,16 @@ class MediaResponse(BaseModel):
     entries: list[EntryResponse]
     class Config:
         from_attributes = True
+
+class MediaOnlyResponse(BaseModel):
+    id: int
+    type: MediaType
+    format: MediaFormat | None
+    season: MediaSeason | None
+    season_year: int | None
+    cover_image: HttpUrl
+    description: str
+    titles: list[MediaTitleResponse]
+    links: list[MediaLinkResponse] | None
+    class Config:
+        from_attributes = True

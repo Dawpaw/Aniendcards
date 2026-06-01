@@ -31,15 +31,14 @@ def create_media(request: requests.CreateMediaRequest, uow: UowDep):
         ),
         uow
     )
-    return responses.MediaResponse.model_validate(media)
-
+    return media
 
 @router.get("/media/{media_title}", response_model=responses.MediaResponse)
 def read_media_by_title(media_title:str, uow: UowDep):
     media = services.get_media_by_title(media_title, uow)
     return media
 
-@router.get("/media/", response_model=list[responses.MediaResponse])
+@router.get("/media/", response_model=list[responses.MediaOnlyResponse])
 def read_all_media(uow: UowDep):
     media = services.get_all_media(uow)
     return media
@@ -61,7 +60,7 @@ def create_artist(request: requests.CreateArtistRequest, uow: UowDep):
         uow
     )
     
-    return responses.ArtistReponse.model_validate(artist)
+    return artist
 
 
 @router.get("/artists/", response_model=list[responses.ArtistReponse])
@@ -95,7 +94,7 @@ def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
         ),
         uow
     )    
-    return responses.EntryResponse.model_validate(entry)
+    return entry
 
 # Endcards
 @router.post("/endcard/", response_model=responses.EndcardResponse)
@@ -110,7 +109,7 @@ def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
         ),
         uow
     )
-    return responses.EndcardResponse.model_validate(endcard)
+    return endcard
 
 @router.get("/endcards/", response_model=list[responses.EndcardResponse])
 def read_endcards(uow: UowDep):

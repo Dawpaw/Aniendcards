@@ -21,6 +21,7 @@ The API will be available at http://localhost:8000 and the interactive docs at h
 
 ## TODO
 
+- Update endpoints
 - Server Error handling
 - Authentication
-- Update endpoints
+- Image object storage

@@ -28,6 +28,10 @@ class AbstractMediaRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def delete_media_by_id(self, media_id: int):
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def add_media(self,  media: model.Media):
         raise NotImplementedError
 
@@ -44,6 +48,10 @@ class AbstractMediaRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
+    def delete_entry_by_id(self, entry_id: int):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
     def get_endcards(self):
         raise NotImplementedError
 
@@ -54,6 +62,11 @@ class AbstractMediaRepository(abc.ABC):
     @abc.abstractmethod
     def add_endcard(self, endcard: model.Endcard):
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete_endcard_by_id(self, endcard_id: int):
+        raise NotImplementedError
+
 
 class AbstractArtistRepository(abc.ABC):
     @abc.abstractmethod
@@ -70,6 +83,10 @@ class AbstractArtistRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_artist(self, artist: model.Artist):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete_artist_by_id(self, artist_id: int):
         raise NotImplementedError
 
 class SqlAlchemyMediaRepository(AbstractMediaRepository):
@@ -96,6 +113,9 @@ class SqlAlchemyMediaRepository(AbstractMediaRepository):
     def add_media(self,  media: model.Media):
         self.session.add(media)
 
+    def delete_media_by_id(self, media_id: int):
+        self.session.query(model.Media).filter_by(id = media_id).delete()
+
     def get_entry_by_id(self, entry_id: int):
         return self.session.query(model.Entry).filter_by(id = entry_id).one_or_none()
 
@@ -105,6 +125,9 @@ class SqlAlchemyMediaRepository(AbstractMediaRepository):
     def add_entry(self, entry: model.Entry):
         self.session.add(entry)
 
+    def delete_entry_by_id(self, entry_id: int):
+        self.session.query(model.Entry).filter_by(id = entry_id).delete()
+
     def get_endcards(self):
         return self.session.query(model.Endcard).all()
 
@@ -113,6 +136,9 @@ class SqlAlchemyMediaRepository(AbstractMediaRepository):
 
     def add_endcard(self, endcard: model.Endcard):
         self.session.add(endcard)
+
+    def delete_endcard_by_id(self, endcard_id: int):
+        self.session.query(model.Endcard).filter_by(id = endcard_id).delete()
 
 class SqlAlchemyArtistRepository(AbstractArtistRepository):
     def __init__(self, session: Session) -> None:
@@ -130,3 +156,6 @@ class SqlAlchemyArtistRepository(AbstractArtistRepository):
 
     def add_artist(self, artist: model.Artist):
         self.session.add(artist)
+
+    def delete_artist_by_id(self, artist_id: int):
+        self.session.query(model.Artist).filter_by(id = artist_id).delete()

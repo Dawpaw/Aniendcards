@@ -3,3 +3,6 @@ class CreateException(Exception):
 
 class GetException(Exception):
     pass
+
+class DeleteException(Exception):
+    pass

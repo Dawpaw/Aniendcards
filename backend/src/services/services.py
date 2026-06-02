@@ -158,6 +158,7 @@ def delete_media_by_id(media_id: int, uow: SqlAlchemyUnitOfWork):
         if not media:
             raise DeleteException(("Media not found"))
         uow.medias.delete_endcard_by_id(media.id)
+        uow.commit()
         return media
     
 
@@ -167,6 +168,7 @@ def delete_entry_by_id(entry_id: int, uow: SqlAlchemyUnitOfWork):
         if not entry:
             raise DeleteException("Entry not found")
         uow.medias.delete_entry_by_id(entry.id)
+        uow.commit()
         return entry
 
 def delete_endcard_by_id(endcard_id: int, uow: SqlAlchemyUnitOfWork):
@@ -175,6 +177,7 @@ def delete_endcard_by_id(endcard_id: int, uow: SqlAlchemyUnitOfWork):
         if not endcard:
             raise DeleteException("Endcard not found")
         uow.medias.delete_endcard_by_id(endcard.id)
+        uow.commit()
         return endcard
 
 def delete_artist_by_id(entry_id: int, uow: SqlAlchemyUnitOfWork):
@@ -183,4 +186,5 @@ def delete_artist_by_id(entry_id: int, uow: SqlAlchemyUnitOfWork):
         if not artist:
             raise DeleteException("Artist not found")
         uow.artists.delete_artist_by_id(artist.id)
+        uow.commit()
         return artist

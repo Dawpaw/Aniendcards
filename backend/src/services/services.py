@@ -1,6 +1,6 @@
 import src.domain.model as model
 from src.services.commands import CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, CreateArtistCommand
-from src.services.exceptions import CreateException, GetException
+from src.services.exceptions import CreateException, GetException, DeleteException
 from src.services.unit_of_work import SqlAlchemyUnitOfWork
 
 
@@ -63,7 +63,7 @@ def create_endcard(request: CreateEndcardCommand, uow: SqlAlchemyUnitOfWork):
         )
         uow.medias.add_endcard(endcard)
         # Update the entry
-        entry = uow.medias.get_entry_by_id(request.entry_id)
+        entry = uow.medias.get_endcard_by_id(request.entry_id)
         if entry is None:
             raise CreateException("Entry does not exist")
         entry.endcards.append(endcard)
@@ -144,10 +144,47 @@ def get_endcards(uow: SqlAlchemyUnitOfWork):
         uow.commit()
         return endcards
 
-def get_endcard_by_id(endcard_id:int, uow: SqlAlchemyUnitOfWork):
+def get_endcard_by_id(endcard_id: int, uow: SqlAlchemyUnitOfWork):
     with uow:
         endcard = uow.medias.get_endcard_by_id(endcard_id)
         if not endcard:
             raise GetException("Endcard not found")
         uow.commit()
         return endcard
+    
+def delete_media_by_id(media_id: int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        media = uow.medias.get_media_by_id(media_id)
+        if not media:
+            raise DeleteException(("Media not found"))
+        uow.medias.delete_endcard_by_id(media.id)
+        uow.commit()
+        return media
+    
+
+def delete_entry_by_id(entry_id: int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        entry = uow.medias.get_endcard_by_id(entry_id)
+        if not entry:
+            raise DeleteException("Entry not found")
+        uow.medias.delete_entry_by_id(entry.id)
+        uow.commit()
+        return entry
+
+def delete_endcard_by_id(endcard_id: int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        endcard = uow.medias.get_endcard_by_id(endcard_id)
+        if not endcard:
+            raise DeleteException("Endcard not found")
+        uow.medias.delete_endcard_by_id(endcard.id)
+        uow.commit()
+        return endcard
+
+def delete_artist_by_id(entry_id: int, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        artist = uow.artists.get_artist_by_id(entry_id)
+        if not artist:
+            raise DeleteException("Artist not found")
+        uow.artists.delete_artist_by_id(artist.id)
+        uow.commit()
+        return artist

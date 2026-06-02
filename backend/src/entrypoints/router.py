@@ -48,6 +48,12 @@ def read_media_by_id(media_id: int, uow: UowDep):
     media = services.get_media_by_id(media_id, uow)
     return media
 
+
+@router.delete("/media/id/{media_id}", response_model=responses.MediaResponse)
+def delete_media_by_id(media_id: int, uow: UowDep):
+    media = services.delete_media_by_id(media_id, uow)
+    return media
+
 # Artists
 @router.post("/artist/", response_model=responses.ArtistReponse)
 def create_artist(request: requests.CreateArtistRequest, uow: UowDep):
@@ -80,6 +86,10 @@ def read_artist(artist_id: int, uow: UowDep):
     db_artist = services.get_artist_by_id(artist_id, uow)
     return db_artist
 
+@router.delete("/artist/id/{artist_id}", response_model=responses.ArtistReponse)
+def delete_artist(artist_id: int, uow: UowDep):
+    db_artist = services.delete_artist_by_id(artist_id, uow)
+    return db_artist
 
 # Entry
 @router.post("/entry/", response_model=responses.EntryResponse)
@@ -120,4 +130,9 @@ def read_endcards(uow: UowDep):
 @router.get("/endcard/{endcard_id}", response_model=responses.EndcardResponse)
 def read_endcard(endcard_id: int, uow: UowDep):
     db_endcard = services.get_endcard_by_id(endcard_id, uow)
+    return db_endcard
+
+@router.delete("/endcard/{endcard_id}", response_model=responses.EndcardResponse)
+def delete_endcard(endcard_id: int, uow: UowDep):
+    db_endcard = services.delete_endcard_by_id(endcard_id, uow)
     return db_endcard

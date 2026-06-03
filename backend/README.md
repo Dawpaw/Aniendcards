@@ -25,3 +25,8 @@ The API will be available at http://localhost:8000 and the interactive docs at h
 - Server Error handling
 - Authentication
 - Image object storage
+  - File upload endpoint
+  - File resizing and compression
+  - Image object storage saving and retrieval
+- Deployment
+  

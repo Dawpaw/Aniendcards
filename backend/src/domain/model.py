@@ -4,8 +4,7 @@
 from dataclasses import dataclass, field
 from typing import Optional, List
 
-from src.enums import MediaType, MediaSeason, MediaFormat, Languages
-
+from src.enums import MediaType, MediaSeason, MediaFormat, Languages, Roles
 
 @dataclass
 class Media:
@@ -56,3 +55,15 @@ class Artist:
 class ArtistLink:
     link: str
 
+# User
+@dataclass 
+class Role:
+    name: Roles
+    description: str
+
+@dataclass
+class User:
+    username: str
+    password: str
+    email: str
+    roles: List[Role]

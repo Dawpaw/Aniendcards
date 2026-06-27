@@ -89,6 +89,35 @@ class AbstractArtistRepository(abc.ABC):
     def delete_artist_by_id(self, artist_id: int):
         raise NotImplementedError
 
+class AbstractUserRepository(abc.ABC):
+    @abc.abstractmethod
+    def get_user_by_id(self, user_id: int):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_user_by_username(self, username: str) -> model.User | None:
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_user_by_email(self, email: str):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_user(self, user: model.User):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete_user_by_id(self, user_id:int):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_role(self, role: model.Role):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_role_by_name(self, role_name:str):
+        raise NotImplementedError
+
 class SqlAlchemyMediaRepository(AbstractMediaRepository):
 
     def __init__(self, session: Session) -> None:
@@ -159,3 +188,30 @@ class SqlAlchemyArtistRepository(AbstractArtistRepository):
 
     def delete_artist_by_id(self, artist_id: int):
         self.session.query(model.Artist).filter_by(id = artist_id).delete()
+
+class SqlAlchemyUserRepository(AbstractUserRepository):
+
+    def __init__(self, session: Session) -> None:
+        super().__init__()
+        self.session:Session = session
+
+    def get_user_by_id(self, user_id: int):
+        return self.session.query(model.User).filter_by(id = user_id).one_or_none()
+
+    def get_user_by_username(self, username: str) -> model.User | None:
+        return self.session.query(model.User).filter_by(username = username).one_or_none()
+    
+    def get_user_by_email(self, email: str):
+        return self.session.query(model.User).filter_by(email = email).one_or_none()
+        
+    def add_user(self, user: model.User):
+        return self.session.add(user)
+    
+    def delete_user_by_id(self, user_id: int):
+        self.session.query(model.User).filter_by(id = user_id).delete()
+
+    def get_role_by_name(self, role_name: str):
+        return self.session.query(model.Role).filter_by(name = role_name).one_or_none()
+
+    def add_role(self, role: model.Role):
+        return self.session.add(role)

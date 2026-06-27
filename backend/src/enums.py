@@ -29,3 +29,10 @@ class Languages(StrEnum):
     eng = "english"
     jp = "japanese"
     rm =  "romaji"
+
+# https://anilist.co/manga/108428    
+class Roles(StrEnum):
+    SHADOW = "SHADOW" # Root
+    ALPHA = "ALPHA" # Admin
+    BETA = "BETA" # Staff
+    NUMBERS = "NUMBERS" # Users

@@ -1,5 +1,6 @@
-from sqlalchemy import ForeignKey, Table, Column, Integer, String, Text, Float
+from sqlalchemy import ForeignKey, Table, Column, Integer, String, Text, Float, Boolean, DateTime
 from sqlalchemy.orm import registry, relationship
+from sqlalchemy.sql import func
 
 import src.domain.model as model
 
@@ -73,6 +74,32 @@ endcards = Table(
     Column("source_url", String)
 )
 
+users = Table(
+    "users", 
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("username", String, nullable=False, unique=True),
+    Column("password", String, nullable=False),
+    Column("email", String, unique=True),
+    Column("is_active", Boolean, default=True),
+    Column("created_at", DateTime, default=func.now() )
+)
+
+roles = Table(
+    "roles",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("name", String, unique=True, index=True),
+    Column("description", Text)
+)
+
+user_roles = Table(
+    "user_roles", 
+    metadata,
+    Column("user_id", ForeignKey("users.id")),
+    Column("role_id", ForeignKey("roles.id"))
+)
+
 def start_mappers():
     media_mapper = mapper_registry.map_imperatively(
                             model.Media,
@@ -112,3 +139,14 @@ def start_mappers():
                                 "artist" : relationship(model.Artist, lazy="joined")
                             }
     )
+
+    # TODO check that this is correct
+    # TODO Didn't got created. But might need a migration first
+    roles_mapper = mapper_registry.map_imperatively(model.Role, roles)
+
+    users_mapper = mapper_registry.map_imperatively(
+                            model.User, 
+                            users,
+                            properties = {
+                                "roles": relationship(model.Role, secondary=user_roles, collection_class=list, lazy="joined")
+                            })

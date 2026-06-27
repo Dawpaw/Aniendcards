@@ -42,3 +42,9 @@ class CreateArtistCommand:
     username: str
     links: list[str] | None
     
+
+@dataclass
+class CreateUserCommand:
+    username: str
+    password: str
+    email: str

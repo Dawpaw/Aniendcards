@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends
 from src.adapters import orm
 from src.entrypoints.schemas import requests, responses
 from src.services import services, unit_of_work
-from src.services.commands import CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, CreateArtistCommand, MediaTitle
+from src.services.commands import (CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, 
+                                    CreateArtistCommand, CreateUserCommand, MediaTitle)
 
 orm.start_mappers()
 router = APIRouter()
@@ -136,3 +137,25 @@ def read_endcard(endcard_id: int, uow: UowDep):
 def delete_endcard(endcard_id: int, uow: UowDep):
     db_endcard = services.delete_endcard_by_id(endcard_id, uow)
     return db_endcard
+
+@router.post("/user/", response_model=responses.UserResponse)
+def create_user(request: requests.CreateUserRequest, uow: UowDep):
+    user = services.create_user(
+        CreateUserCommand(
+            username=request.username,
+            password=request.password,
+            email=request.email
+        ),
+        uow
+    )
+    return user
+
+# This is just a temporary endpoint
+@router.post("/role/", response_model=responses.RoleResponse)
+def create_role(request: requests.CreateRoleRequest, uow: UowDep):
+    role = services.create_role(
+        request.name,
+        request.description,
+        uow
+    )
+    return role

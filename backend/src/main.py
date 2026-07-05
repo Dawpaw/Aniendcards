@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.entrypoints.router import router as post_router
+from backend.src.entrypoints.router_endcards import router as endcards_router
+from backend.src.entrypoints.router_auth import router as auth_router
 
 from contextlib import asynccontextmanager
 from sqlalchemy import create_engine
+from src.adapters import orm
 from src.adapters.orm import metadata  # adjust import
 from src.config import get_postgres_uri
 
@@ -15,6 +17,7 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+orm.start_mappers()
 
 # TODO Update once I know production domain
 origins = [
@@ -30,4 +33,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(post_router)
+app.include_router(endcards_router)
+app.include_router(auth_router)

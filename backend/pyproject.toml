@@ -8,5 +8,6 @@ dependencies = [
     "argon2-cffi>=25.1.0",
     "fastapi[standard]>=0.115.12",
     "psycopg2-binary>=2.9.12",
+    "pyseto>=1.9.3",
     "sqlalchemy>=2.0.41",
 ]

@@ -7,3 +7,8 @@ def get_postgres_uri():
     password = os.environ.get("DB_PASSWORD", "changeme")
     db = os.environ.get("DB_NAME", "aniendcards")
     return f"postgresql://{user}:{password}@{host}:{port}/{db}"
+
+    
+PASETO_KEY:str = os.environ.get("PASETO_KEY", "changeme")
+
+ACCESS_TOKEN_EXPIRE_MINUTES: int = 15

@@ -67,3 +67,5 @@ class User:
     password: str
     email: str
     roles: List[Role]
+    is_active: bool
+

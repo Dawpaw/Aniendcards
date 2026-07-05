@@ -78,3 +78,7 @@ class UserResponse(BaseModel):
 class RoleResponse(BaseModel):
     name: Roles
     description: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str

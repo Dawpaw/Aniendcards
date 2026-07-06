@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.src.entrypoints.router_endcards import router as endcards_router
-from backend.src.entrypoints.router_auth import router as auth_router
+from src.entrypoints.router_endcards import router as endcards_router
+from src.entrypoints.router_auth import router as auth_router
 
 from contextlib import asynccontextmanager
 from sqlalchemy import create_engine

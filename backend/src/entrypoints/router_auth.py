@@ -3,14 +3,13 @@ from typing import Annotated, Generator
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
-# from src.adapters import orm
 from src.entrypoints.schemas import requests, responses
 from src.services import services, unit_of_work
 from src.services.commands import  CreateUserCommand
 
-# orm.start_mappers()
 router = APIRouter()
 
+# TODO Move this to another file
 def get_uow() -> Generator[unit_of_work.SqlAlchemyUnitOfWork, None, None]:
     yield unit_of_work.SqlAlchemyUnitOfWork()
 UowDep = Annotated[unit_of_work.SqlAlchemyUnitOfWork, Depends(get_uow)]
@@ -58,12 +57,8 @@ def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depen
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], uow: UowDep):
     return services.get_current_user(token, uow)
 
-def get_current_active_user(current_user = Depends(get_current_user)):
-    if not current_user.is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
-
-# TODO Delete - it is just for test
-@router.get("/users/me/")
-async def read_users_me(current_user = Depends(get_current_active_user)):
-    return {"message": "test worked yay"}
+def is_user_admin(current_user = Depends(get_current_user)):
+    current_user_admin: bool = services.is_user_admin(current_user)
+    if not current_user_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    return 

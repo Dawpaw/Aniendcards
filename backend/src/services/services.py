@@ -9,6 +9,8 @@ from src.services.unit_of_work import SqlAlchemyUnitOfWork
 
 from src.services.security import hash_password, verify_password, create_access_token, decode_access_token
 
+# TODO Split these into multiple services
+
 def create_media(request: CreateMediaCommand, uow: SqlAlchemyUnitOfWork):
     with uow:
         titles = [t.title for t in request.titles]
@@ -252,6 +254,8 @@ def get_current_user(token: str, uow: SqlAlchemyUnitOfWork):
             raise Exception("Something went wrong with the user")
         return to_domain_user(user)
     
+def is_user_admin(current_user: model.User):
+    return any(role.name in (RolesEnum.SHADOW, RolesEnum.ALPHA, RolesEnum.BETA) for role in current_user.roles)
 
 def create_role(role_name: RolesEnum, description:str , uow: SqlAlchemyUnitOfWork):
     with uow:

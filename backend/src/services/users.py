@@ -4,7 +4,6 @@ from src.enums import Roles as RolesEnum
 from src.config import ACCESS_TOKEN_EXPIRE_MINUTES
 import src.domain.model as model
 from src.services.commands import CreateUserCommand
-from src.services.exceptions import CreateException, GetException 
 from src.services.unit_of_work import SqlAlchemyUnitOfWork
 
 from src.services.security import hash_password, verify_password, create_access_token, decode_access_token
@@ -25,7 +24,7 @@ def create_user(request: CreateUserCommand, uow: SqlAlchemyUnitOfWork):
         previous_user = uow.users.get_user_by_username(username=request.username.lower())
         default_role: list[model.Role] = [uow.users.get_role_by_name(role_name=RolesEnum.NUMBERS)]
         if (previous_user is not None):
-            raise CreateException("User already exists") 
+            return None
         
         user = model.User(
             username=request.username.lower(),
@@ -99,7 +98,5 @@ def assign_role_to_user(username: str, role_name:RolesEnum, uow: SqlAlchemyUnitO
 def get_users(uow: SqlAlchemyUnitOfWork):
     with uow:
         users = uow.users.get_users()
-        if not users:
-            raise GetException("No artist exist")
         uow.commit()
         return users

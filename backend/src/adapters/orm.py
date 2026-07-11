@@ -140,8 +140,6 @@ def start_mappers():
                             }
     )
 
-    # TODO check that this is correct
-    # TODO Didn't got created. But might need a migration first
     roles_mapper = mapper_registry.map_imperatively(model.Role, roles)
 
     users_mapper = mapper_registry.map_imperatively(

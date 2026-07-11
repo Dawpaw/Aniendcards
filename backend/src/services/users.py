@@ -10,7 +10,6 @@ from src.services.unit_of_work import SqlAlchemyUnitOfWork
 from src.services.security import hash_password, verify_password, create_access_token, decode_access_token
 
         
-# TODO Move the user services 
 def to_domain_user(orm_user) -> model.User:
     return model.User(
         username=orm_user.username,

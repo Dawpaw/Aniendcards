@@ -30,6 +30,20 @@ def create_user(request: requests.CreateUserRequest, uow: UowDep):
     )
     return user
 
+@router.post("/user/role", response_model=responses.UserResponse)
+def assign_role_to_user(request: requests.AssignRoleRequest, uow: UowDep):
+    user = services.assign_role_to_user(
+        request.username,
+        request.role,
+        uow
+    )
+    return user
+
+@router.get("/users/", response_model=list[responses.UserResponse])
+def get_all_users(uow: UowDep):
+    user = services.get_users(uow)
+    return user
+
 # This is just a temporary endpoint
 @router.post("/role/", response_model=responses.RoleResponse)
 def create_role(request: requests.CreateRoleRequest, uow: UowDep):

@@ -103,6 +103,10 @@ class AbstractUserRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def get_users(self):
+        raise NotImplementedError
+    
+    @abc.abstractmethod
     def add_user(self, user: model.User):
         raise NotImplementedError
 
@@ -204,6 +208,9 @@ class SqlAlchemyUserRepository(AbstractUserRepository):
     def get_user_by_email(self, email: str):
         return self.session.query(model.User).filter_by(email = email).one_or_none()
         
+    def get_users(self):
+        return self.session.query(model.User).all()
+
     def add_user(self, user: model.User):
         return self.session.add(user)
     

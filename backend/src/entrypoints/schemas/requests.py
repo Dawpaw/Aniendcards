@@ -51,3 +51,10 @@ class CreateUserRequest(BaseModel):
 class CreateRoleRequest(BaseModel):
     name: Roles
     description: str
+
+class AssignRoleRequest(BaseModel):
+    username: str = Field(pattern=r"^[^\s]+$", 
+                            min_length=3, 
+                            max_length=20,
+                            description="Username cannot contain spaces.")
+    role: Roles

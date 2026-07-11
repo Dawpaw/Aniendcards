@@ -259,7 +259,7 @@ def is_user_admin(current_user: model.User):
 
 def create_role(role_name: RolesEnum, description:str , uow: SqlAlchemyUnitOfWork):
     with uow:
-        prev_role = uow.users.get_role_by_name(role_name.lower())
+        prev_role = uow.users.get_role_by_name(role_name)
         if prev_role is not None:
             raise Exception("Role already exists")
         role = model.Role(
@@ -270,3 +270,24 @@ def create_role(role_name: RolesEnum, description:str , uow: SqlAlchemyUnitOfWor
         uow.users.add_role(role)
         uow.commit()
         return role
+    
+# TODO clean this
+def assign_role_to_user(username: str, role_name:RolesEnum, uow: SqlAlchemyUnitOfWork):
+    with uow:
+        user = uow.users.get_user_by_username(username=username.lower())
+        role = uow.users.get_role_by_name(role_name)
+        if role is None or user is None:
+            raise Exception("Role or user does not exists")
+
+        user.roles.append(role)
+        uow.commit()
+        return user
+
+
+def get_users(uow: SqlAlchemyUnitOfWork):
+    with uow:
+        users = uow.users.get_users()
+        if not users:
+            raise GetException("No artist exist")
+        uow.commit()
+        return users

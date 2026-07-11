@@ -1,6 +1,6 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, EmailStr, Field
 
-from src.enums import MediaSeason, MediaType, MediaFormat, Languages
+from src.enums import MediaSeason, MediaType, MediaFormat, Languages, Roles
 
 class CreateArtistsLinkRequest(BaseModel):
     link: HttpUrl
@@ -39,3 +39,22 @@ class CreateMediaRequest(BaseModel):
     description: str
     titles: list[CreateMediaTitleRequest]
     links: list[CreateMediaLinkRequest] | None
+
+class CreateUserRequest(BaseModel):
+    username: str = Field(pattern=r"^[^\s]+$", 
+                            min_length=3, 
+                            max_length=20,
+                            description="Username cannot contain spaces.")
+    password: str = Field(min_length=8, max_length=20)
+    email: EmailStr
+    
+class CreateRoleRequest(BaseModel):
+    name: Roles
+    description: str
+
+class AssignRoleRequest(BaseModel):
+    username: str = Field(pattern=r"^[^\s]+$", 
+                            min_length=3, 
+                            max_length=20,
+                            description="Username cannot contain spaces.")
+    role: Roles

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, HttpUrl
 
-from src.enums import MediaSeason, MediaType, MediaFormat, Languages
+from src.enums import MediaSeason, MediaType, MediaFormat, Languages, Roles
 
 class ArtistsLinkResponse(BaseModel):
     link: HttpUrl
@@ -69,3 +69,16 @@ class MediaOnlyResponse(BaseModel):
     links: list[MediaLinkResponse] | None
     class Config:
         from_attributes = True
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    roles: list["RoleResponse"] | None
+
+class RoleResponse(BaseModel):
+    name: Roles
+    description: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str

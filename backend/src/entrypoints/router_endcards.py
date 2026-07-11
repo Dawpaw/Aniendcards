@@ -1,22 +1,16 @@
-from typing import Annotated, Generator
-
 from fastapi import APIRouter, Depends
 
-from src.adapters import orm
 from src.entrypoints.schemas import requests, responses
-from src.services import services, unit_of_work
-from src.services.commands import CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, CreateArtistCommand, MediaTitle
+from src.entrypoints.dependencies import UowDep, is_user_admin
+from src.services import services
+from src.services.commands import (CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, 
+                                    CreateArtistCommand, MediaTitle)
 
-orm.start_mappers()
 router = APIRouter()
 
-def get_uow() -> Generator[unit_of_work.SqlAlchemyUnitOfWork, None, None]:
-    yield unit_of_work.SqlAlchemyUnitOfWork()
-UowDep = Annotated[unit_of_work.SqlAlchemyUnitOfWork, Depends(get_uow)]
-
-
 # Media
-@router.post("/media/", response_model=responses.MediaResponse)
+@router.post("/media/", response_model=responses.MediaResponse,
+                dependencies=[Depends(is_user_admin)])
 def create_media(request: requests.CreateMediaRequest, uow: UowDep):
     media = services.create_media(
         CreateMediaCommand(
@@ -49,13 +43,15 @@ def read_media_by_id(media_id: int, uow: UowDep):
     return media
 
 
-@router.delete("/media/id/{media_id}", response_model=responses.MediaResponse)
+@router.delete("/media/id/{media_id}", response_model=responses.MediaResponse,
+                dependencies=[Depends(is_user_admin)])
 def delete_media_by_id(media_id: int, uow: UowDep):
     media = services.delete_media_by_id(media_id, uow)
     return media
 
 # Artists
-@router.post("/artist/", response_model=responses.ArtistReponse)
+@router.post("/artist/", response_model=responses.ArtistReponse,
+                dependencies=[Depends(is_user_admin)])
 def create_artist(request: requests.CreateArtistRequest, uow: UowDep):
 
     artist = services.create_artist(
@@ -86,13 +82,15 @@ def read_artist(artist_id: int, uow: UowDep):
     db_artist = services.get_artist_by_id(artist_id, uow)
     return db_artist
 
-@router.delete("/artist/id/{artist_id}", response_model=responses.ArtistReponse)
+@router.delete("/artist/id/{artist_id}", response_model=responses.ArtistReponse,
+                dependencies=[Depends(is_user_admin)])
 def delete_artist(artist_id: int, uow: UowDep):
     db_artist = services.delete_artist_by_id(artist_id, uow)
     return db_artist
 
 # Entry
-@router.post("/entry/", response_model=responses.EntryResponse)
+@router.post("/entry/", response_model=responses.EntryResponse,
+                dependencies=[Depends(is_user_admin)])
 def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
     entry = services.create_entry(
         CreateEntryCommand(
@@ -107,7 +105,8 @@ def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
     return entry
 
 # Endcards
-@router.post("/endcard/", response_model=responses.EndcardResponse)
+@router.post("/endcard/", response_model=responses.EndcardResponse,
+                dependencies=[Depends(is_user_admin)])
 def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
     endcard = services.create_endcard(
         CreateEndcardCommand(
@@ -132,7 +131,8 @@ def read_endcard(endcard_id: int, uow: UowDep):
     db_endcard = services.get_endcard_by_id(endcard_id, uow)
     return db_endcard
 
-@router.delete("/endcard/{endcard_id}", response_model=responses.EndcardResponse)
+@router.delete("/endcard/{endcard_id}", response_model=responses.EndcardResponse,
+                dependencies=[Depends(is_user_admin)])
 def delete_endcard(endcard_id: int, uow: UowDep):
     db_endcard = services.delete_endcard_by_id(endcard_id, uow)
     return db_endcard

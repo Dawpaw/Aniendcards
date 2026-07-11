@@ -12,6 +12,7 @@ from src.adapters import repository
 class AbstractUnitOfWork(abc.ABC):
     medias: repository.AbstractMediaRepository
     artists: repository.AbstractArtistRepository
+    users: repository.AbstractUserRepository # TODO see if this has to be moved somewhere else
 
     def __enter__(self):
         return self
@@ -41,6 +42,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         self.session: Session = self.session_factory()
         self.medias = repository.SqlAlchemyMediaRepository(self.session)
         self.artists = repository.SqlAlchemyArtistRepository(self.session)
+        self.users = repository.SqlAlchemyUserRepository(self.session)
         return super().__enter__()
     
     def __exit__(self, exc_type, exc, tb):

@@ -1,19 +1,12 @@
-from typing import Annotated, Generator
-
 from fastapi import APIRouter, Depends
 
 from src.entrypoints.schemas import requests, responses
-from src.entrypoints.router_auth import is_user_admin
-from src.services import services, unit_of_work
+from src.entrypoints.dependencies import UowDep, is_user_admin
+from src.services import services
 from src.services.commands import (CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, 
                                     CreateArtistCommand, MediaTitle)
 
 router = APIRouter()
-
-# TODO Move this 
-def get_uow() -> Generator[unit_of_work.SqlAlchemyUnitOfWork, None, None]:
-    yield unit_of_work.SqlAlchemyUnitOfWork()
-UowDep = Annotated[unit_of_work.SqlAlchemyUnitOfWork, Depends(get_uow)]
 
 # Media
 @router.post("/media/", response_model=responses.MediaResponse,

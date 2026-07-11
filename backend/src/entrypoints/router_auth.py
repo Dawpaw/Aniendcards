@@ -21,6 +21,12 @@ def create_user(request: requests.CreateUserRequest, uow: UowDep):
         ),
         uow
     )
+    if user is None:
+        raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="User alreaedy exists",
+                )
+        
     return user
 
 @router.post("/user/role", response_model=responses.UserResponse,

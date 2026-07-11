@@ -21,11 +21,11 @@ The API will be available at http://localhost:8000 and the interactive docs at h
 
 ## TODO
 
-- Authentication
+- ~~Authentication~~
   - ~~User and roles models~~
   - ~~Token authentication~~
-  - Add dependencies for create and delete endpoints
-  - Move user creation to another service
+  - ~~Add dependencies for create and delete endpoints~~
+  - ~~Move user creation to another service~~
 - Server Error handling
 - Image object storage
   - File upload endpoint

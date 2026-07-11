@@ -17,8 +17,18 @@ UowDep = Annotated[unit_of_work.SqlAlchemyUnitOfWork, Depends(get_uow)]
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
+# Too shallow for my liking
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], uow: UowDep):
+    return services.get_current_user(token, uow)
 
-@router.post("/user/", response_model=responses.UserResponse)
+def is_user_admin(current_user = Depends(get_current_user)):
+    current_user_admin: bool = services.is_user_admin(current_user)
+    if not current_user_admin:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    return 
+
+@router.post("/user/", response_model=responses.UserResponse,
+                dependencies=[Depends(is_user_admin)])
 def create_user(request: requests.CreateUserRequest, uow: UowDep):
     user = services.create_user(
         CreateUserCommand(
@@ -30,7 +40,8 @@ def create_user(request: requests.CreateUserRequest, uow: UowDep):
     )
     return user
 
-@router.post("/user/role", response_model=responses.UserResponse)
+@router.post("/user/role", response_model=responses.UserResponse,
+                dependencies=[Depends(is_user_admin)])
 def assign_role_to_user(request: requests.AssignRoleRequest, uow: UowDep):
     user = services.assign_role_to_user(
         request.username,
@@ -39,13 +50,15 @@ def assign_role_to_user(request: requests.AssignRoleRequest, uow: UowDep):
     )
     return user
 
-@router.get("/users/", response_model=list[responses.UserResponse])
+@router.get("/users/", response_model=list[responses.UserResponse],
+            dependencies=[Depends(is_user_admin)])
 def get_all_users(uow: UowDep):
     user = services.get_users(uow)
     return user
 
 # This is just a temporary endpoint
-@router.post("/role/", response_model=responses.RoleResponse)
+@router.post("/role/", response_model=responses.RoleResponse,
+                dependencies=[Depends(is_user_admin)])
 def create_role(request: requests.CreateRoleRequest, uow: UowDep):
     role = services.create_role(
         request.name,
@@ -66,13 +79,3 @@ def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depen
         )
     access_token = services.create_auth_token(user)
     return responses.TokenResponse(access_token=access_token, token_type="bearer")
-
-# Too shallow for my liking
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], uow: UowDep):
-    return services.get_current_user(token, uow)
-
-def is_user_admin(current_user = Depends(get_current_user)):
-    current_user_admin: bool = services.is_user_admin(current_user)
-    if not current_user_admin:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-    return 

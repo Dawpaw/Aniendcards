@@ -64,7 +64,7 @@ def create_endcard(request: CreateEndcardCommand, uow: SqlAlchemyUnitOfWork):
         )
         uow.medias.add_endcard(endcard)
         # Update the entry
-        entry = uow.medias.get_endcard_by_id(request.entry_id)
+        entry = uow.medias.get_entry_by_id(request.entry_id)
         if entry is None:
             # TODO confirm if this is needed 
             uow.rollback()

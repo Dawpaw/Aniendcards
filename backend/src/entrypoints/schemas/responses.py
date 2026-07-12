@@ -20,7 +20,7 @@ class EndcardResponse(BaseModel):
     img_url: HttpUrl
     alt_img_url: HttpUrl | None
     source_url: HttpUrl
-    artist: ArtistReponse
+    artist: ArtistReponse | None
     class Config:
         from_attributes = True
 

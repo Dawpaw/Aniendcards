@@ -2,11 +2,18 @@ from sqlalchemy import ForeignKey, Table, Column, Integer, String, Text, Float, 
 from sqlalchemy.orm import registry, relationship
 from sqlalchemy.sql import func
 
+from enum import StrEnum
+
 import src.domain.model as model
+
 
 mapper_registry = registry()
 metadata = mapper_registry.metadata
 
+class ForeignKeyConstraintType(StrEnum):
+    CASCADE = "CASCADE"
+    RESTRICT = "RESTRICT"
+    SET_NULL = "SET NULL"
 
 
 media = Table(
@@ -25,7 +32,7 @@ media_titles = Table(
     "media_titles", 
     metadata, 
     Column("id", Integer, primary_key=True, autoincrement=True), 
-    Column("media_id", ForeignKey("media.id")), 
+    Column("media_id", ForeignKey("media.id", ondelete=ForeignKeyConstraintType.CASCADE)), 
     Column("language", String(8)),
     Column("title", String, unique=True)
 )
@@ -35,7 +42,7 @@ media_links = Table(
     "media_links", 
     metadata, 
     Column("id", Integer, primary_key=True, autoincrement=True), 
-    Column("media_id", ForeignKey("media.id")), 
+    Column("media_id", ForeignKey("media.id", ondelete=ForeignKeyConstraintType.CASCADE)), 
     Column("link", String)
 )
 
@@ -43,7 +50,7 @@ entries = Table(
     "entries", 
     metadata,
     Column("id", Integer, primary_key=True, autoincrement=True), 
-    Column("media.id", ForeignKey("media.id")),
+    Column("media.id", ForeignKey("media.id", ondelete=ForeignKeyConstraintType.CASCADE)),
     Column("description", Text, nullable=True),
     Column("entry_number", Float), 
 )
@@ -59,7 +66,7 @@ artist_links = Table(
     "artists_links", 
     metadata, 
     Column("id", Integer, primary_key=True, autoincrement=True),
-    Column("artist_id", ForeignKey("artists.id")), 
+    Column("artist_id", ForeignKey("artists.id", ondelete=ForeignKeyConstraintType.CASCADE)), 
     Column("link", String)
 )
 
@@ -67,8 +74,8 @@ endcards = Table(
     "endcards",
     metadata, 
     Column("id", Integer, primary_key=True, autoincrement=True), 
-    Column("entry_id", ForeignKey("entries.id")), 
-    Column("artist_id", ForeignKey("artists.id")), 
+    Column("entry_id", ForeignKey("entries.id", ondelete=ForeignKeyConstraintType.SET_NULL)), 
+    Column("artist_id", ForeignKey("artists.id", ondelete=ForeignKeyConstraintType.SET_NULL)), 
     Column("img_url", String), 
     Column("alt_img_url", String, nullable=True),
     Column("source_url", String)
@@ -96,8 +103,8 @@ roles = Table(
 user_roles = Table(
     "user_roles", 
     metadata,
-    Column("user_id", ForeignKey("users.id")),
-    Column("role_id", ForeignKey("roles.id"))
+    Column("user_id", ForeignKey("users.id", ondelete=ForeignKeyConstraintType.CASCADE)),
+    Column("role_id", ForeignKey("roles.id", ondelete=ForeignKeyConstraintType.CASCADE))
 )
 
 def start_mappers():

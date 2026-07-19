@@ -10,7 +10,9 @@ class CreateArtistRequest(BaseModel):
     links: list[CreateArtistsLinkRequest] | None
 
 class CreateEncardRequest(BaseModel):
-    img_url: HttpUrl
+    img_url_large: HttpUrl
+    img_url_medium: HttpUrl
+    img_url_small: HttpUrl
     alt_img_url: HttpUrl | None
     source_url: HttpUrl
     artist_id: int

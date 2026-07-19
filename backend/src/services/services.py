@@ -57,7 +57,9 @@ def create_endcard(request: CreateEndcardCommand, uow: SqlAlchemyUnitOfWork):
         if not artist:
             return None
         endcard = model.Endcard(
-                img_url= request.img_url,
+                img_url_large= request.img_url_large,
+                img_url_medium= request.img_url_medium,
+                img_url_small= request.img_url_small,
                 alt_img_url= request.alt_img_url,
                 source_url=request.source_url,
                 artist=artist

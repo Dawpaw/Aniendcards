@@ -90,7 +90,7 @@
 									{#each entry.endcards as endcard}
 										<a href="/endcards/{endcard.id}" class="block">
 											<img
-												src={endcard.img_url}
+												src={endcard.img_url_small}
 												alt="Endcard"
 												class="w-16 h-10 object-cover rounded-md hover:opacity-80 transition-opacity"
 												loading="lazy"

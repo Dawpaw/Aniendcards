@@ -31,7 +31,9 @@ class CreateEntryCommand:
 
 @dataclass
 class CreateEndcardCommand:
-    img_url: str
+    img_url_large: str
+    img_url_medium: str
+    img_url_small: str
     alt_img_url: str | None
     source_url: str
     artist_id: int

@@ -155,7 +155,9 @@ def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
 def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
     endcard = services.create_endcard(
         CreateEndcardCommand(
-            img_url=str(request.img_url),
+            img_url_large=str(request.img_url_large),
+            img_url_medium=str(request.img_url_medium),
+            img_url_small=str(request.img_url_small),
             alt_img_url=str(request.alt_img_url) if request.alt_img_url else None,
             source_url=str(request.source_url),
             artist_id=request.artist_id,
@@ -197,6 +199,7 @@ def delete_endcard(endcard_id: int, uow: UowDep):
     services.delete_endcard_by_id(endcard_id, uow)
     
 # FIXME this needs to be moved 
+# TODO endpoint to upload the cover
 @router.post("/upload/endcard")
 async def upload_endcard(background_tasks: BackgroundTasks, file: UploadFile, uow: UowDep):
     # Simple file validation

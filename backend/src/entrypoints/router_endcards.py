@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from pathlib import Path
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, BackgroundTasks
 
+from src.config import IMAGES_MAX_ALLOWED_SIZE, IMAGES_TEMP_FOLDER
 from src.entrypoints.schemas import requests, responses
 from src.entrypoints.dependencies import UowDep, is_user_admin
-from src.services import services
+from src.services import services, image_processing
 from src.services.commands import (CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, 
                                     CreateArtistCommand, MediaTitle)
 
@@ -194,3 +196,29 @@ def read_endcard(endcard_id: int, uow: UowDep):
 def delete_endcard(endcard_id: int, uow: UowDep):
     services.delete_endcard_by_id(endcard_id, uow)
     
+# FIXME this needs to be moved 
+@router.post("/upload/endcard")
+async def upload_endcard(background_tasks: BackgroundTasks, file: UploadFile, uow: UowDep):
+    # Simple file validation
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    await file.seek(0)
+    if file_size > IMAGES_MAX_ALLOWED_SIZE * 1024 * 1024:
+        # more than 2 MB
+        raise HTTPException(status_code=400, detail="File too large")
+
+    content_type = file.content_type
+    # https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Formats/Image_types
+    if content_type not in ["image/jpeg", "image/png", "image/avif", "image/webp"]:
+        raise HTTPException(status_code=400, detail="Invalid file type")
+
+    upload_dir = Path(IMAGES_TEMP_FOLDER)
+    # TODO dir creation somewhere else
+    upload_dir.mkdir(exist_ok=True, parents=True)
+    file_name = str(file.filename)
+    file_save_path = upload_dir / Path(file_name)
+    with open(file_save_path, "wb") as file_doc:
+        file_doc.write(await file.read())
+    background_tasks.add_task(image_processing.process_image, file_name, uow)
+    
+    return {"message": "Uploaded successfully"}

@@ -32,5 +32,5 @@ The API will be available at http://localhost:8000 and the interactive docs at h
   - File resizing and compression
   - Image object storage saving and retrieval
 - Deployment
-- Fix delete rules in the orm
+- ~~Fix delete rules in the orm~~
   

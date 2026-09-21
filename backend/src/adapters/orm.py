@@ -76,7 +76,9 @@ endcards = Table(
     Column("id", Integer, primary_key=True, autoincrement=True), 
     Column("entry_id", ForeignKey("entries.id", ondelete=ForeignKeyConstraintType.SET_NULL)), 
     Column("artist_id", ForeignKey("artists.id", ondelete=ForeignKeyConstraintType.SET_NULL)), 
-    Column("img_url", String), 
+    Column("img_url_large", String), 
+    Column("img_url_medium", String), 
+    Column("img_url_small", String), 
     Column("alt_img_url", String, nullable=True),
     Column("source_url", String)
 )

@@ -7,7 +7,7 @@
 	class="group relative block rounded-[var(--radius-card)] overflow-hidden aspect-video bg-[var(--color-lavender-light)] shadow-sm hover:shadow-md transition-shadow"
 >
 	<img
-		src={endcard.img_url}
+		src={endcard.img_url_medium}
 		alt={mediaTitle || 'Endcard'}
 		class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
 		loading="lazy"

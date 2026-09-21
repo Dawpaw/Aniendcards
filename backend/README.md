@@ -27,10 +27,9 @@ The API will be available at http://localhost:8000 and the interactive docs at h
   - ~~Add dependencies for create and delete endpoints~~
   - ~~Move user creation to another service~~
 - ~~Server Error handling~~
-- Image object storage
-  - File upload endpoint
-  - File resizing and compression
-  - Image object storage saving and retrieval
+- ~~Image object storage~~
+  - ~~File upload endpoint~~
+  - ~~File resizing and compression~~
 - Deployment
-- Fix delete rules in the orm
+- ~~Fix delete rules in the orm~~
   

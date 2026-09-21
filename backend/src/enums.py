@@ -36,3 +36,8 @@ class Roles(StrEnum):
     ALPHA = "ALPHA" # Admin
     BETA = "BETA" # Staff
     NUMBERS = "NUMBERS" # Users
+
+    
+class ImageTypes(StrEnum):
+    COVER = "COVER"
+    ENDCARD = "ENDCARD"

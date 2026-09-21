@@ -25,7 +25,7 @@
 		<!-- Image -->
 		<div class="flex-1 min-w-0">
 			<img
-				src={endcard.img_url}
+				src={endcard.img_url_large}
 				alt={mediaTitle ?? 'Endcard'}
 				class="w-full rounded-[var(--radius-card)] shadow-md object-contain max-h-[70vh]"
 			/>

@@ -1,10 +1,27 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-
-from src.entrypoints.schemas import requests, responses
-from src.entrypoints.dependencies import UowDep, is_user_admin
-from src.services import services
-from src.services.commands import (CreateMediaCommand, CreateEntryCommand, CreateEndcardCommand, 
-                                    CreateArtistCommand, MediaTitle)
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    status,
+)
+from src.entrypoints.dependencies import (
+    UowDep,
+    is_user_admin,
+)
+from src.entrypoints.schemas import (
+    requests,
+    responses,
+)
+from src.services import (
+    services,
+)
+from src.services.commands import (
+    CreateArtistCommand,
+    CreateEndcardCommand,
+    CreateEntryCommand,
+    CreateMediaCommand,
+    MediaTitle,
+)
 
 router = APIRouter()
 
@@ -153,7 +170,9 @@ def create_entry(request: requests.CreateEntryRequest, uow: UowDep):
 def create_endcard(request: requests.CreateEncardRequest, uow: UowDep):
     endcard = services.create_endcard(
         CreateEndcardCommand(
-            img_url=str(request.img_url),
+            img_url_large=str(request.img_url_large),
+            img_url_medium=str(request.img_url_medium),
+            img_url_small=str(request.img_url_small),
             alt_img_url=str(request.alt_img_url) if request.alt_img_url else None,
             source_url=str(request.source_url),
             artist_id=request.artist_id,

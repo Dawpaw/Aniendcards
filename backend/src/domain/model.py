@@ -41,7 +41,9 @@ class Entry:
 
 @dataclass
 class Endcard:
-    img_url: str
+    img_url_large: str
+    img_url_medium: str
+    img_url_small: str
     alt_img_url: Optional[str]
     source_url: str
     artist: "Artist"
